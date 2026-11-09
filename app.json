@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "katalogku",
+    "slug": "katalogku",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/icon-square.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#A1BF77",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "com.anonymous.katalogku"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-status-bar"
+    ],
+    "web": {
+      "favicon": "./assets/icon-square.png"
+    }
+  }
+}
