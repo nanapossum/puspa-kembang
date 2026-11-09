@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    height: 56,
+    paddingHorizontal: 20,
     gap: 8,
   },
-  logo: { width: 45, height: 42 }, // ukuran logo di Figma
+  logo: { width: 45.33, height: 41.98 },
   texts: { flexShrink: 1, gap: 4 },
   title: { ...TEXT.heading, color: COLORS.primaryLightA },
   description: { ...TEXT.caption, color: COLORS.text },

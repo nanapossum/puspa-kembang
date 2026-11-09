@@ -1,6 +1,7 @@
 import { StyleSheet, TextInput, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { COLORS } from '../theme/colors';
+import { TEXT } from '../theme/typography';
 
 export default function SearchBar({ value, onChangeText, placeholder = 'Cari nama bunga' }) {
   return (
@@ -33,8 +34,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     paddingVertical: 0,
-    fontSize: 15,
-    lineHeight: 20,
+    ...TEXT.body,
     color: COLORS.text,
   },
 });

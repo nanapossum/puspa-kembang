@@ -1,5 +1,6 @@
 import { ScrollView, Pressable, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../theme/colors';
+import { FONT_FAMILY, TEXT } from '../theme/typography';
 
 export default function CategoryChips({ items, selected, onSelect }) {
   return (
@@ -37,6 +38,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   chipAktif: { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
-  text: { color: COLORS.text, textTransform: 'capitalize' },
-  textAktif: { color: COLORS.onPrimary, fontWeight: 'bold' },
+  text: { ...TEXT.small, color: COLORS.text, textTransform: 'capitalize' },
+  textAktif: { color: COLORS.onPrimary, fontFamily: FONT_FAMILY.medium },
 });

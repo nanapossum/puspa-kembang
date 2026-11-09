@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { COLORS } from '../theme/colors';
+import { TEXT } from '../theme/typography';
 
 export default function NavigationItem({ label, icon, active = false, onPress }) {
   return (
@@ -22,5 +23,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   active: { backgroundColor: COLORS.navActive },
-  label: { fontSize: 14, lineHeight: 20, color: COLORS.accentDark },
+  label: { ...TEXT.small, color: COLORS.accentDark },
 });

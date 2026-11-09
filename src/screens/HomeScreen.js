@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '../theme/colors';
-import { TEXT } from '../theme/typography';
+import { FONT_FAMILY, TEXT } from '../theme/typography';
 import { DUMMY_FLOWERS } from '../data/dummy';
 import HeaderBar from '../components/HeaderBar';
 import SearchBar from '../components/SearchBar';
@@ -19,10 +20,12 @@ const BANNER_COLOR = COLORS.accentDark;
 const SORTS = ['Termurah', 'Termahal'];
 const PAD = 16;
 const GAP = 12;
+const RowSeparator = () => <View style={styles.rowSeparator} />;
 
 const rupiah = (n) => 'Rp ' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-export default function HomeScreen({ onOpenFlower }) {
+export default function HomeScreen({ onOpenFlower, navigation, topInset }) {
+  const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const numColumns = width >= 768 ? 4 : width >= 500 ? 3 : 2;
   const itemWidth = (width - PAD * 2 - GAP * (numColumns - 1)) / numColumns;
@@ -53,9 +56,10 @@ export default function HomeScreen({ onOpenFlower }) {
         numColumns={numColumns}
         columnWrapperStyle={styles.row}
         contentContainerStyle={styles.list}
+        ItemSeparatorComponent={RowSeparator}
         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
-          <View style={styles.header}>
+          <View style={[styles.header, { paddingTop: topInset ?? insets.top }]}>
             <HeaderBar title="Puspa" showLogo />
 
             <View style={styles.content}>
@@ -92,13 +96,16 @@ export default function HomeScreen({ onOpenFlower }) {
         }
         ListEmptyComponent={<Text style={styles.empty}>Bunga tidak ditemukan.</Text>}
         renderItem={({ item }) => (
-          <View style={{ width: itemWidth }}>
+          <View style={[styles.cell, { maxWidth: itemWidth }]}>
             <FlowerCard
               name={item.name}
               description={item.description}
               image={item.image}
               discount={item.discount}
-              onPress={() => onOpenFlower?.(item.id)}
+              onPress={() => {
+                if (navigation?.navigate) navigation.navigate('Detail', { id: item.id });
+                else onOpenFlower?.(item.id);
+              }}
             />
             {TUGAS_MODUL4 && <Text style={styles.price}>{rupiah(item.price)} / tangkai</Text>}
           </View>
@@ -120,10 +127,12 @@ export default function HomeScreen({ onOpenFlower }) {
 
 const styles = StyleSheet.create({
   list: { paddingHorizontal: PAD, paddingBottom: 16 },
-  row: { gap: GAP, marginBottom: GAP },
+  row: { columnGap: GAP },
+  rowSeparator: { height: GAP },
+  cell: { flex: 1, gap: 6 },
 
   header: { marginHorizontal: -PAD },
-  content: { paddingHorizontal: PAD, gap: 16, marginBottom: 16 },
+  content: { paddingHorizontal: PAD, paddingBottom: 16, gap: 16 },
   searchRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
 
   banner: { height: 120, borderRadius: 16, overflow: 'hidden', justifyContent: 'center' },
@@ -135,12 +144,12 @@ const styles = StyleSheet.create({
     bottom: 12,
     color: COLORS.onPrimary,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: FONT_FAMILY.bold,
   },
 
   chips: { marginHorizontal: -PAD },
   collectionTitle: { ...TEXT.heading, color: COLORS.accentDark },
 
-  price: { marginTop: 6, ...TEXT.caption, color: COLORS.muted },
+  price: { ...TEXT.caption, color: COLORS.muted },
   empty: { textAlign: 'center', color: COLORS.muted, marginTop: 32 },
 });
