@@ -1,22 +1,36 @@
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '../theme/colors';
 import { TEXT } from '../theme/typography';
 import { SHADOW } from '../theme/shadow';
+import { DUMMY_FLOWERS } from '../data/dummy';
+import { useFavorites } from '../context/FavoritesContext';
 import FavoriteButton from '../components/FavoriteButton';
+import { useCart } from '../context/CartContext';
+import CartButton from '../components/CartButton';
 
-export default function DetailScreen({ flower, isFavorite, onToggleFavorite, onBack }) {
+export default function DetailScreen({ route, navigation }) {
+  const { id } = route.params;
+  const flower = DUMMY_FLOWERS.find((f) => f.id === id);
+  const topInset = useSafeAreaInsets().top;
+  const { favoriteIds, toggleFavorite } = useFavorites();
+  const isFavorite = favoriteIds.includes(id);
+  const { cartIds, toggleCart } = useCart();
+  const isInCart = cartIds.includes(id);
+  const onBack = () => navigation.goBack();
+
   if (!flower) return null;
 
   return (
     <View style={styles.container}>
       {/* DetailHeader */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: topInset + 16 }]}>
         <Pressable onPress={onBack} style={styles.backButton} hitSlop={8}>
           <Feather name="arrow-left" size={24} color={COLORS.primary} />
         </Pressable>
-        <Text style={styles.pageTitle} numberOfLines={1}>Detail bunga</Text>
+        <Text style={styles.pageTitle} numberOfLines={1}>{flower.name}</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
@@ -57,7 +71,11 @@ export default function DetailScreen({ flower, isFavorite, onToggleFavorite, onB
 
         <FavoriteButton
           state={isFavorite ? 'saved' : 'default'}
-          onPress={() => onToggleFavorite(flower.id)}
+          onPress={() => toggleFavorite(flower.id)}
+        />
+        <CartButton
+          state={isInCart ? 'added' : 'default'}
+          onPress={() => toggleCart(flower.id)}
         />
       </ScrollView>
     </View>
@@ -66,7 +84,13 @@ export default function DetailScreen({ flower, isFavorite, onToggleFavorite, onB
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  header: { flexDirection: 'row', alignItems: 'center', padding: 16, gap: 12 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    gap: 12,
+  },
   backButton: {
     width: 48,
     height: 48,
@@ -80,10 +104,10 @@ const styles = StyleSheet.create({
   content: { paddingHorizontal: 16, paddingBottom: 24, gap: 16 },
   image: { width: '100%', height: 160, borderRadius: 12 },
 
-  info: { padding: 8, gap: 12, borderRadius: 12, backgroundColor: COLORS.card },
+  info: { padding: 8, gap: 15, borderRadius: 12, backgroundColor: COLORS.card },
   name: { ...TEXT.heading, color: COLORS.text },
   field: { paddingHorizontal: 8, gap: 4 },
-  label: { fontSize: 14, lineHeight: 20, fontWeight: '700', color: COLORS.accent },
+  label: { ...TEXT.smallBold, color: COLORS.accent },
   value: { ...TEXT.body, color: COLORS.text },
 
   section: { padding: 8, gap: 8, borderRadius: 12, backgroundColor: COLORS.card },

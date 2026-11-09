@@ -37,15 +37,16 @@ export default function FlowerCard({ name, description, image, discount, onPress
 const styles = StyleSheet.create({
   card: {
     flex: 1,
+    minHeight: 196,
     backgroundColor: COLORS.cardTint,
     borderRadius: 12,
     ...SHADOW,
   },
   image: { width: '100%', height: 92, borderRadius: 12 },
   placeholder: { backgroundColor: COLORS.imagePlaceholder },
-  summary: { padding: 12, gap: 4 },
-  name: { ...TEXT.body, fontWeight: '700', color: COLORS.accentDark },
-  description: { ...TEXT.caption, color: COLORS.text },
+  summary: { padding: 12, gap: 4, minHeight: 104 },
+  name: { ...TEXT.bodyMedium, color: COLORS.accentDark },
+  description: { ...TEXT.caption, color: COLORS.text, minHeight: 36 },
   badge: {
   position: 'absolute',
   top: 8,
@@ -55,5 +56,5 @@ const styles = StyleSheet.create({
   borderRadius: 8,
   backgroundColor: COLORS.primary,
 },
-badgeText: { ...TEXT.caption, color: COLORS.onPrimary, fontWeight: '700' },
+badgeText: { ...TEXT.captionBold, color: COLORS.onPrimary },
 });

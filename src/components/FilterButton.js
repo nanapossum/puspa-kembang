@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../theme/colors';
+import { TEXT } from '../theme/typography';
 
 export default function FilterButton({ onPress, active = false }) {
   const color = active ? COLORS.onPrimary : COLORS.icon;
@@ -25,5 +26,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   active: { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
-  label: { fontSize: 14, lineHeight: 20 },
+  label: { ...TEXT.small },
 });
